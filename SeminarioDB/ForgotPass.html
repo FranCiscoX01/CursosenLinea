@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Forgot Password</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+</head>
+<style>
+        #myProgress {
+          width: 100%;
+          background-color: #ddd;
+        }
+        
+        #myBar {
+          width: 0%;
+        }
+</style>
+<script>
+        function move() {
+          var elem = document.getElementById("myBar");   
+          var width = 0;
+          var id = setInterval(frame, 210);
+          function frame() {
+            if (width >= 100) {
+              clearInterval(id);
+              $.ajax({
+                    url: "NewPass.php",
+                    data:'usernameP='+$("#usernameP").val(),
+                    type: "POST",
+                    success:function(data){
+                        $("#ValidarUsuario").html(data);
+                    },
+                    error:function (){}
+                });
+              //window.location="/SeminarioDB/NewPass.php";
+            } else {
+              width += 10; 
+              elem.style.width = width + '%'; 
+            }
+          }
+        }
+</script>
+<body>
+<center><h1 class="display-4">Recuperar Contraseña</h1></center>
+    <div class="container mt-5 pt-5">
+        <div class="card mx-auto border-0">
+            <div class="card-body pb-4">
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="pills-login">
+                        <form method="POST" action="NewPass.php">
+                            <div class="form-group">
+                                <i class="material-icons md-36">perm_identity</i>
+                                <input type="text" name="usernameP" class="form-control" id="usernameP" placeholder="Username" required autofocus>
+                                <span id="ValidarUsuario"></span>
+                            </div>
+                            <div class="text-center pt-4">
+                                <button type="button" id="Buscar" class="btn btn-primary" onClick="move()">Buscar</button>
+                            </div>
+                        </form>
+                        <div class="text-center pt-4"></div>
+                            <div class="progress" id="myProgress">
+                                <div class="progress-bar" id="myBar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Buscando ...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
